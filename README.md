@@ -1,33 +1,72 @@
-# Auto24-Price-Monitor---Commercial-Solution
-Enterprise-grade vehicle price monitoring solution for Auto24.ee marketplace. Provides real-time alerts for price changes and new listings with advanced analytics and multi-channel notifications.
-🔑 Key Business Features
-🚗 Vehicle Market Intelligence
-Real-time monitoring of 100+ vehicle parameters
+# Auto24 Price Monitor
 
-Price change detection with customizable thresholds
+![Python](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white)
+![Selenium](https://img.shields.io/badge/Selenium-43B02A?logo=selenium&logoColor=white)
+![Telegram](https://img.shields.io/badge/Telegram-Notifications-26A5E4?logo=telegram&logoColor=white)
 
-New listing alerts within minutes of publication
+**Мониторинг автомобильных объявлений Auto24.ee: новые предложения и изменения цен с уведомлениями в Telegram.**
 
-📊 Advanced Analytics
-Historical price tracking for market trend analysis
+Приложение открывает выбранную выдачу в Firefox, обходит страницы, сохраняет последние известные цены и сравнивает их при следующей проверке. Управление доступно через окно Tkinter; ссылку на поиск можно менять через бота.
 
-Competitive positioning against market averages
+## Возможности
 
-Customizable filters for specific vehicle types
+- Сбор названия, цены, года, пробега, топлива, коробки передач и ссылки на объявление.
+- Переход по страницам результатов.
+- Определение новых объявлений и изменения цены вверх или вниз.
+- Telegram-уведомления с фотографией, характеристиками и ссылкой.
+- Кнопки запуска и остановки, состояние и журнал в окне приложения.
+- Сохранение выбранной ссылки и последних цен между запусками.
 
-⚡ Technical Advantages
-Headless browser automation for reliable data collection
+## Запуск
 
-Multi-threaded processing for fast scanning
+Нужен Python 3.10+.
 
-Telegram API integration for instant notifications
+```bash
+git clone https://github.com/Pupsickk/Auto24-Price-Monitor---Commercial-Solution.git
+cd Auto24-Price-Monitor---Commercial-Solution
+python -m venv .venv
+```
 
-Commercial-grade error handling and logging
+Активируйте окружение: Windows PowerShell — `.venv\Scripts\Activate.ps1`, Linux/macOS — `source .venv/bin/activate`.
 
-💼 Business Value
-Time savings - automates manual market monitoring
+```bash
+python -m pip install -r requirements.txt
+```
 
-Competitive edge - get alerts before others
+Скопируйте `.env.example` в `.env` и заполните настройки. Затем:
 
-Data-driven decisions - based on real market data
-<img width="1183" height="977" alt="image" src="https://github.com/user-attachments/assets/4e51b181-e7b4-45c3-90b7-a5f5fbbd81ca" />
+```bash
+python par.py
+```
+
+Дополнительно нужен Firefox и работающий Firefox WebDriver: Selenium использует `webdriver.Firefox()`. В Linux может понадобиться системный пакет `python3-tk`; приложение требует графическую сессию для Tkinter.
+
+В `.env` укажите `BOT_TOKEN`. Откройте своего бота и отправьте `/start`, задайте выдачу Auto24 кнопкой «Сменить ссылку», затем нажмите «Запустить» в окне приложения.
+
+## Как работает мониторинг
+
+| Этап | Что происходит |
+| --- | --- |
+| Загрузка | Selenium / Firefox получает HTML |
+| Извлечение | BeautifulSoup разбирает карточки объявлений |
+| Сравнение | Идентификатор и цена сопоставляются с локальной базой |
+| Уведомление | pyTelegramBotAPI отправляет изменение подписанным чатам |
+| Сохранение | Последние значения записываются в JSON |
+
+## Файлы и настройки
+
+| Файл / параметр | Назначение |
+| --- | --- |
+| [par.py](par.py) | Основная программа и интерфейс |
+| `prices_db.json` | Последняя известная цена и данные объявления |
+| `last_url.txt` | Сохранённая ссылка на поиск |
+| `CHECK_INTERVAL` | Пауза между циклами: 120 секунд по умолчанию |
+
+## Особенности текущей версии
+
+Первый проход считает найденные объявления новыми. Интервал проверки складывается из времени обхода страниц и паузы. Список чатов хранится в памяти: после перезапуска нужно снова отправить `/start`. JSON хранит последнее состояние, а не полную историю изменения цен. Работа парсера зависит от актуальной разметки и доступности Auto24; проверка на живом сайте в рамках оформления не выполнялась.
+
+
+## Скриншоты
+
+<img src="https://github.com/user-attachments/assets/4e51b181-e7b4-45c3-90b7-a5f5fbbd81ca" alt="Экран приложения 1" width="760" />

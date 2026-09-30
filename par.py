@@ -1,3 +1,4 @@
+from dotenv import load_dotenv
 import logging
 import requests
 from bs4 import BeautifulSoup
@@ -25,7 +26,10 @@ if sys.stdout is not None:
 DEFAULT_URL = 'https://www.auto24.ee/kasutatud/nimekiri.php?bn=2&a=100&g1=10&g2=15000&ad=1&ae=8&af=50&ssid=239646451&ak=0'
 SAVED_URL_FILE = 'last_url.txt'
 PRICES_DB_FILE = 'prices_db.json'
-TOKEN = '8087333611:AAFNyvmCnNPuoFrJcSbj19EuYaZYW364ILQ'
+load_dotenv()
+TOKEN = os.getenv("BOT_TOKEN", "").strip()
+if not TOKEN:
+    raise RuntimeError("Set BOT_TOKEN in .env before starting the application.")
 CHECK_INTERVAL = 120  # 2 минуты 
 BASE_URL = 'https://www.auto24.ee'
 
